@@ -3,6 +3,8 @@ import React from "react";
 import { TetrominoType } from "../util/tetrominos";
 // components
 import Cell from "./Cell";
+// style
+import { TetrisStage } from "./styles/StageStyle";
 
 interface StageProps {
   stage: Array<Array<Array<TetrominoType | string>>>;
@@ -16,7 +18,7 @@ Cell의 key
 
 const Stage = ({ stage }: StageProps) => {
   return (
-    <div>
+    <TetrisStage width={stage[0].length} height={stage.length}>
       {stage.map((rows: Array<Array<TetrominoType | string>>, y: number) =>
         rows.map((cell: Array<TetrominoType | string>, x: number) => {
           return (
@@ -24,7 +26,7 @@ const Stage = ({ stage }: StageProps) => {
           );
         })
       )}
-    </div>
+    </TetrisStage>
   );
 };
 
