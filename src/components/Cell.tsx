@@ -1,7 +1,11 @@
 import React from "react";
 
-const Cell = () => {
-  return <div />;
+interface CellProps {
+  type: [];
+}
+
+const Cell = ({ type }: CellProps) => {
+  return <div>cell</div>;
 };
 
 export default Cell;
