@@ -1,8 +1,11 @@
 import React from "react";
+// util
+import { TetrominoType } from "../util/tetrominos";
+// components
 import Cell from "./Cell";
 
 interface StageProps {
-  stage: [][][];
+  stage: Array<Array<Array<TetrominoType | string>>>;
 }
 
 /*
@@ -14,9 +17,11 @@ Cell의 key
 const Stage = ({ stage }: StageProps) => {
   return (
     <div>
-      {stage.map((row: [][][], y: number) =>
-        row.map((cell: [][], x: number) => {
-          return <Cell key={y * row.length + x} type={cell[0]} />;
+      {stage.map((rows: Array<Array<TetrominoType | string>>, y: number) =>
+        rows.map((cell: Array<TetrominoType | string>, x: number) => {
+          return (
+            <Cell key={y * rows.length + x} type={cell[0] as TetrominoType} />
+          );
         })
       )}
     </div>
