@@ -1,7 +1,9 @@
 import React from "react";
+// style
+import { TetrisStartButton } from "./styles/StartButtonStyle";
 
 const StartButton = () => {
-  return <div>Start Game</div>;
+  return <TetrisStartButton>Start Game</TetrisStartButton>;
 };
 
 export default StartButton;
