@@ -16,6 +16,5 @@ export const TetrisStage = styled.div<TetrisStageProps>`
   grid-template-columns: repeat(${(props) => props.width}, 1fr);
   grid-gap: 1px;
   border: 2px solid #333;
-
   background: #111;
 `;
