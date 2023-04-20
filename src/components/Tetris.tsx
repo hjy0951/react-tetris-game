@@ -1,8 +1,6 @@
 import React from "react";
-
 // util
-import { createStage } from "../gameHelper";
-
+import { createStage } from "../util/gameHelper";
 // Components
 import Stage from "./Stage";
 import Display from "./Display";
