@@ -1,11 +1,15 @@
 import React from "react";
+// style
+import { TetrisCell } from "./styles/CellStyle";
+// util
+import { TETROMINOS, TetrominoType } from "../util/tetrominos";
 
 interface CellProps {
-  type: [];
+  type: TetrominoType;
 }
 
 const Cell = ({ type }: CellProps) => {
-  return <div>cell</div>;
+  return <TetrisCell type={type} color={TETROMINOS[type].color} />;
 };
 
 export default Cell;
