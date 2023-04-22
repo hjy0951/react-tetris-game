@@ -2,8 +2,12 @@ import React from "react";
 // style
 import { TetrisStartButton } from "./styles/StartButtonStyle";
 
-const StartButton = () => {
-  return <TetrisStartButton>Start Game</TetrisStartButton>;
+interface StartButtonProps {
+  onClickFn: any;
+}
+
+const StartButton = ({ onClickFn }: StartButtonProps) => {
+  return <TetrisStartButton onClick={onClickFn}>Start Game</TetrisStartButton>;
 };
 
 export default StartButton;
