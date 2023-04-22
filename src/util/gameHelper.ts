@@ -1,8 +1,10 @@
+import { StageFormat } from "../components/Stage";
+
 // stage 생성
 export const STAGE_HEIGHT = 20;
 export const STAGE_WIDTH = 12;
 
-export const createStage = () => {
+export const createStage = (): StageFormat => {
   return Array.from({ length: STAGE_HEIGHT }, () =>
     new Array(STAGE_WIDTH).fill([0, "clear"])
   );
