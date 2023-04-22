@@ -1,10 +1,10 @@
 import React from "react";
-// util
-import { TetrominoType } from "../util/tetrominos";
 // components
 import Cell from "./Cell";
 // style
 import { TetrisStage } from "./styles/StageStyle";
+// util
+import { TetrominoType } from "../util/tetrominos";
 
 export type StageFormat = Array<Array<Array<TetrominoType | string>>>;
 
