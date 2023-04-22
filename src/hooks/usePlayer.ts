@@ -8,7 +8,7 @@ interface Position {
   y: number;
 }
 
-interface PlayerState {
+export interface PlayerState {
   pos: Position;
   tetromino: TetrominoShape;
   collided: boolean;
