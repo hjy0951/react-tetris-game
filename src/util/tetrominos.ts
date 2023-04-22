@@ -1,8 +1,3 @@
-export interface TetrominoProps {
-  shape: (number | string)[][];
-  color: string;
-}
-
 /*
 Type Assertion을 위한 Type 선언
 : 접근할 Object의 Property Key들을 Type으로 선언하지 않을 경우,
@@ -11,6 +6,13 @@ Type Assertion을 위한 Type 선언
   것을 명시하여 Object의 property에 접근
 */
 export type TetrominoType = 0 | "I" | "J" | "L" | "O" | "S" | "T" | "Z";
+
+export type TetrominoShape = Array<Array<TetrominoType>>;
+
+export interface TetrominoProps {
+  shape: TetrominoShape;
+  color: string;
+}
 
 export const TETROMINOS = {
   0: { shape: [[0]], color: "0, 0, 0" },
@@ -76,6 +78,6 @@ export const pickRandomTetromino = (): TetrominoProps => {
   const testrominoTypes = "IJLOSTZ";
   const randomNumber = Math.floor(Math.random() * testrominoTypes.length);
   const randomPick = testrominoTypes[randomNumber] as TetrominoType;
-  const tetromino = TETROMINOS[randomPick];
+  const tetromino = TETROMINOS[randomPick] as TetrominoProps;
   return tetromino;
 };

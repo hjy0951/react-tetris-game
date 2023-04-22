@@ -6,8 +6,10 @@ import Cell from "./Cell";
 // style
 import { TetrisStage } from "./styles/StageStyle";
 
+export type StageFormat = Array<Array<Array<TetrominoType | string>>>;
+
 interface StageProps {
-  stage: Array<Array<Array<TetrominoType | string>>>;
+  stage: StageFormat;
 }
 
 /*
