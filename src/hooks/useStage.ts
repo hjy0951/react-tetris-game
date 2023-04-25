@@ -36,11 +36,15 @@ export const useStage = (
         });
       });
 
+      if (player.collided) {
+        resetPlayer();
+      }
+
       return newStage;
     };
 
     setStage((prev: StageFormat) => updateStage(prev));
-  }, [player]);
+  }, [player, resetPlayer]);
 
   return [stage, setStage];
 };

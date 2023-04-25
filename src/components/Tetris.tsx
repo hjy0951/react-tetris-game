@@ -6,13 +6,13 @@ import StartButton from "./StartButton";
 // style
 import { TetrisWrapper, TetrisContainer } from "./styles/TetrisStyle";
 // util
-import { createStage } from "../util/gameHelper";
+import { checkCollision, createStage } from "../util/gameHelper";
 // hooks
 import { useStage } from "../hooks/useStage";
 import { usePlayer } from "../hooks/usePlayer";
 
 const Tetris = () => {
-  const [gameOver] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   const [player, updatePlayerPos, resetPlayer] = usePlayer();
   const [stage, setStage] = useStage(player, resetPlayer);
@@ -23,10 +23,20 @@ const Tetris = () => {
     // Reset Everything
     setStage(createStage() as StageFormat);
     resetPlayer();
+    setGameOver(false);
   };
 
   const drop = () => {
-    updatePlayerPos({ x: 0, y: 1, collided: false });
+    if (!checkCollision(player, stage, { x: 0, y: 1 })) {
+      updatePlayerPos({ x: 0, y: 1, collided: false });
+    } else {
+      // 더이상 블록이 내려올 수 없는 상태로 게임 종료
+      if (player.pos.y < 1) {
+        console.log("Game Over!");
+        setGameOver(true);
+      }
+      updatePlayerPos({ x: 0, y: 0, collided: true });
+    }
   };
 
   const dropPlayer = () => {
@@ -34,7 +44,9 @@ const Tetris = () => {
   };
 
   const movePlayer = (dir: number) => {
-    updatePlayerPos({ x: dir, y: 0, collided: false });
+    if (!checkCollision(player, stage, { x: dir, y: 0 })) {
+      updatePlayerPos({ x: dir, y: 0, collided: false });
+    }
   };
 
   const move = ({ key }: KeyboardEvent<HTMLDivElement>) => {

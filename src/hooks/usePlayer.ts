@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { TetrominoShape, pickRandomTetromino } from "../util/tetrominos";
 import { STAGE_WIDTH } from "../util/gameHelper";
 
-interface Position {
+export interface Position {
   x: number;
   y: number;
 }
