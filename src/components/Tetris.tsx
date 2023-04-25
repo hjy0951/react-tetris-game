@@ -14,7 +14,7 @@ import { usePlayer } from "../hooks/usePlayer";
 const Tetris = () => {
   const [gameOver, setGameOver] = useState(false);
 
-  const [player, updatePlayerPos, resetPlayer] = usePlayer();
+  const [player, updatePlayerPos, resetPlayer, rotatePlayer] = usePlayer();
   const [stage, setStage] = useStage(player, resetPlayer);
 
   console.log("Rendering!"); // 리렌더링 확인을 위한 로그
@@ -58,7 +58,7 @@ const Tetris = () => {
       } else if (key === "ArrowDown") {
         dropPlayer();
       } else if (key === "ArrowUp") {
-        // rotate tetromino
+        rotatePlayer(stage, 1);
       }
     }
   };

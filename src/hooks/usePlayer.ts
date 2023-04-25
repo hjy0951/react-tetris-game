@@ -2,6 +2,8 @@ import { useCallback, useState } from "react";
 // util
 import { TetrominoShape, pickRandomTetromino } from "../util/tetrominos";
 import { STAGE_WIDTH } from "../util/gameHelper";
+// type (interface, type들에 대한 파일 분리가 필요할듯)
+import { StageFormat } from "../components/Stage";
 
 export interface Position {
   x: number;
@@ -27,7 +29,8 @@ interface PositionUpdateProps {
 export const usePlayer = (): [
   player: PlayerState,
   updatePlayerPos: (data: PositionUpdateProps) => void,
-  resetPlayer: () => void
+  resetPlayer: () => void,
+  rotatePlayer: (stage: StageFormat, dir: number) => void
 ] => {
   const [player, setPlayer] = useState<PlayerState>({
     pos: { x: 0, y: 0 },
@@ -52,5 +55,24 @@ export const usePlayer = (): [
     setPlayer(initialPlayer);
   }, []);
 
-  return [player, updatePlayerPos, resetPlayer];
+  // 행렬 회전 (dir === 1 : 시계 방향, dir을 달리하여 반시계 등 다른 기능 추가 가능하도록)
+  //  참고: https://www.qu3vipon.com/python-rotate-2d-array
+  const rotate = (matrix: TetrominoShape, dir: number) => {
+    // Transpose
+    const transposeTetrominoMatrix = matrix.map((_, idx) => {
+      return matrix.map((col) => col[idx]);
+    });
+    // Reverse
+    if (dir > 0) return transposeTetrominoMatrix.map((row) => row.reverse());
+    return transposeTetrominoMatrix.reverse();
+  };
+
+  const rotatePlayer = (stage: StageFormat, dir: number) => {
+    const newPlayer = JSON.parse(JSON.stringify(player));
+    newPlayer.tetromino = rotate(newPlayer.tetromino, dir);
+
+    setPlayer(newPlayer);
+  };
+
+  return [player, updatePlayerPos, resetPlayer, rotatePlayer];
 };
