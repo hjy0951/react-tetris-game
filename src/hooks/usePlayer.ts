@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 // util
 import { TetrominoShape, pickRandomTetromino } from "../util/tetrominos";
-import { STAGE_WIDTH } from "../util/gameHelper";
+import { STAGE_WIDTH, checkCollision } from "../util/gameHelper";
 // type (interface, type들에 대한 파일 분리가 필요할듯)
 import { StageFormat } from "../components/Stage";
 
@@ -67,10 +67,24 @@ export const usePlayer = (): [
     return transposeTetrominoMatrix.reverse();
   };
 
+  // 블록 회전 및 충돌 검사
   const rotatePlayer = (stage: StageFormat, dir: number) => {
     const newPlayer = JSON.parse(JSON.stringify(player));
     newPlayer.tetromino = rotate(newPlayer.tetromino, dir);
 
+    const currentPosX = newPlayer.pos.x;
+    let offset = 1;
+
+    while (checkCollision(newPlayer, stage, { x: 0, y: 0 })) {
+      newPlayer.pos.x += offset;
+      offset = -(offset + (offset > 0 ? 1 : -1));
+
+      if (offset > newPlayer.tetromino[0].length) {
+        rotate(newPlayer.tetromino, -dir);
+        newPlayer.pos.x = currentPosX;
+        return;
+      }
+    }
     setPlayer(newPlayer);
   };
 
