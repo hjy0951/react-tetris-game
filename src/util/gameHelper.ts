@@ -30,8 +30,8 @@ export const checkCollision = (
         ) {
           return true;
         }
-        // cell이 clear라면 충돌 X -> false
       }
     }
   }
+  return false;
 };
