@@ -24,7 +24,6 @@ const Tetris = () => {
     useGameStatus(rowsCleared);
 
   console.log("Rendering!"); // 리렌더링 확인을 위한 로그
-  console.log("rowsCleared: " + rowsCleared);
 
   const startGame = () => {
     // Reset Everything

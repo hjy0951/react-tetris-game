@@ -7,6 +7,8 @@ import {
   SetStateAction,
 } from "react";
 
+// Strict Mode로 인해 develop 모드에서 useEffect가 2번 실행되어 rowsCleared 업데이트가 2번 이루어짐
+
 export const useGameStatus = (
   rowsCleared: number
 ): [
