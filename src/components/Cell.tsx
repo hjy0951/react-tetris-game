@@ -12,4 +12,4 @@ const Cell = ({ type }: CellProps) => {
   return <TetrisCell type={type} color={TETROMINOS[type].color} />;
 };
 
-export default Cell;
+export default React.memo(Cell);
