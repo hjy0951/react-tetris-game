@@ -6,7 +6,8 @@ import { TetrisStage } from "./styles/StageStyle";
 // util
 import { TetrominoType } from "../util/tetrominos";
 
-export type StageFormat = Array<Array<Array<TetrominoType | string>>>;
+export type StageLine = Array<Array<TetrominoType | string>>;
+export type StageFormat = Array<StageLine>;
 
 interface StageProps {
   stage: StageFormat;
