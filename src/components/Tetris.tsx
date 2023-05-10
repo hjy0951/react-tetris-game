@@ -11,15 +11,20 @@ import { checkCollision, createStage } from "../util/gameHelper";
 import { useStage } from "../hooks/useStage";
 import { usePlayer } from "../hooks/usePlayer";
 import { useInterval } from "../hooks/useInterval";
+import { useGameStatus } from "../hooks/useGameStatus";
 
 const Tetris = () => {
   const [gameOver, setGameOver] = useState(false);
   const [dropTime, setDropTime] = useState<number | null>(null);
 
   const [player, updatePlayerPos, resetPlayer, rotatePlayer] = usePlayer();
-  const [stage, setStage] = useStage(player, resetPlayer);
+  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
+
+  const [score, setScore, rows, setRows, level, setLevel] =
+    useGameStatus(rowsCleared);
 
   console.log("Rendering!"); // 리렌더링 확인을 위한 로그
+  console.log("rowsCleared: " + rowsCleared);
 
   const startGame = () => {
     // Reset Everything
@@ -27,9 +32,18 @@ const Tetris = () => {
     setDropTime(1000);
     resetPlayer();
     setGameOver(false);
+    setScore(0);
+    setRows(0);
+    setLevel(1);
   };
 
   const drop = () => {
+    // 10개의 행이 정리될 때마다 level up & 속도 증가
+    if (rows > level * 10) {
+      setLevel((prev) => prev + 1);
+      setDropTime(850 + level * 150);
+    }
+
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
@@ -45,7 +59,7 @@ const Tetris = () => {
   const downKeyUp = ({ key }: KeyboardEvent<HTMLDivElement>) => {
     if (!gameOver) {
       if (key === "ArrowDown") {
-        setDropTime(1000);
+        setDropTime(850 + level * 150);
       }
     }
   };
@@ -88,9 +102,9 @@ const Tetris = () => {
             <Display gameOver={gameOver} text="Game Over" />
           ) : (
             <div>
-              <Display text="Score" />
-              <Display text="Rows" />
-              <Display text="Level" />
+              <Display text={`Score: ${score}`} />
+              <Display text={`Rows: ${rows}`} />
+              <Display text={`Level: ${level}`} />
             </div>
           )}
           <StartButton onClickFn={startGame} />
