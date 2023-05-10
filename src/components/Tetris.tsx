@@ -42,7 +42,16 @@ const Tetris = () => {
     }
   };
 
+  const downKeyUp = ({ key }: KeyboardEvent<HTMLDivElement>) => {
+    if (!gameOver) {
+      if (key === "ArrowDown") {
+        setDropTime(1000);
+      }
+    }
+  };
+
   const dropPlayer = () => {
+    setDropTime(null);
     drop();
   };
 
@@ -71,7 +80,7 @@ const Tetris = () => {
   }, dropTime);
 
   return (
-    <TetrisWrapper role="button" onKeyDown={(e) => move(e)}>
+    <TetrisWrapper role="button" onKeyDown={(e) => move(e)} onKeyUp={downKeyUp}>
       <TetrisContainer>
         <Stage stage={stage as StageFormat} />
         <aside>
