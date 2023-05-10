@@ -10,9 +10,11 @@ import { checkCollision, createStage } from "../util/gameHelper";
 // hooks
 import { useStage } from "../hooks/useStage";
 import { usePlayer } from "../hooks/usePlayer";
+import { useInterval } from "../hooks/useInterval";
 
 const Tetris = () => {
   const [gameOver, setGameOver] = useState(false);
+  const [dropTime, setDropTime] = useState<number | null>(null);
 
   const [player, updatePlayerPos, resetPlayer, rotatePlayer] = usePlayer();
   const [stage, setStage] = useStage(player, resetPlayer);
@@ -22,6 +24,7 @@ const Tetris = () => {
   const startGame = () => {
     // Reset Everything
     setStage(createStage() as StageFormat);
+    setDropTime(1000);
     resetPlayer();
     setGameOver(false);
   };
@@ -62,6 +65,10 @@ const Tetris = () => {
       }
     }
   };
+
+  useInterval(() => {
+    drop();
+  }, dropTime);
 
   return (
     <TetrisWrapper role="button" onKeyDown={(e) => move(e)}>
