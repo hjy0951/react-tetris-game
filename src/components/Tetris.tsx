@@ -12,6 +12,8 @@ import { useStage } from "../hooks/useStage";
 import { usePlayer } from "../hooks/usePlayer";
 import { useInterval } from "../hooks/useInterval";
 import { useGameStatus } from "../hooks/useGameStatus";
+import Block from "./Block";
+import { pickRandomTetromino } from "../util/tetrominos";
 
 const Tetris = () => {
   const [gameOver, setGameOver] = useState(false);
@@ -120,6 +122,7 @@ const Tetris = () => {
             </div>
           )}
           <StartButton onClickFn={startGame} />
+          <Block tetromino={pickRandomTetromino()} />
         </aside>
       </TetrisContainer>
     </TetrisWrapper>
