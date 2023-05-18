@@ -36,12 +36,11 @@ const Tetris = () => {
     setLevel(1);
   };
 
-  const drop = () => {
+  const softDrop = () => {
     // 10개의 행이 정리될 때마다 level up & 속도 증가
     if (rows > level * 10) {
       setLevel((prev) => prev + 1);
       setDropTime(1000 / (level + 1));
-      console.log(dropTime);
     }
 
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
@@ -56,6 +55,15 @@ const Tetris = () => {
     }
   };
 
+  const hardDrop = () => {
+    let height = 1;
+    while (!checkCollision(player, stage, { x: 0, y: height })) {
+      height++;
+    }
+
+    updatePlayerPos({ x: 0, y: height - 1, collided: true });
+  };
+
   const downKeyUp = ({ key }: KeyboardEvent<HTMLDivElement>) => {
     if (!gameOver) {
       if (key === "ArrowDown") {
@@ -66,7 +74,7 @@ const Tetris = () => {
 
   const dropPlayer = () => {
     setDropTime(null);
-    drop();
+    softDrop();
   };
 
   const movePlayer = (dir: number) => {
@@ -88,12 +96,13 @@ const Tetris = () => {
       } else if (event.key === " ") {
         event.preventDefault();
         console.log("press SpaceBar");
+        hardDrop();
       }
     }
   };
 
   useInterval(() => {
-    drop();
+    softDrop();
   }, dropTime);
 
   return (
