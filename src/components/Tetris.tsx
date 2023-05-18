@@ -74,16 +74,19 @@ const Tetris = () => {
     }
   };
 
-  const move = ({ key }: KeyboardEvent<HTMLDivElement>) => {
+  const move = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!gameOver) {
-      if (key === "ArrowLeft") {
+      if (event.key === "ArrowLeft") {
         movePlayer(-1);
-      } else if (key === "ArrowRight") {
+      } else if (event.key === "ArrowRight") {
         movePlayer(1);
-      } else if (key === "ArrowDown") {
+      } else if (event.key === "ArrowDown") {
         dropPlayer();
-      } else if (key === "ArrowUp") {
+      } else if (event.key === "ArrowUp") {
         rotatePlayer(stage, 1);
+      } else if (event.key === " ") {
+        event.preventDefault();
+        console.log("press SpaceBar");
       }
     }
   };
