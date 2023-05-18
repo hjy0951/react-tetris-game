@@ -28,7 +28,7 @@ const Tetris = () => {
   const startGame = () => {
     // Reset Everything
     setStage(createStage() as StageFormat);
-    setDropTime(1000);
+    setDropTime(500);
     resetPlayer();
     setGameOver(false);
     setScore(0);
@@ -40,7 +40,8 @@ const Tetris = () => {
     // 10개의 행이 정리될 때마다 level up & 속도 증가
     if (rows > level * 10) {
       setLevel((prev) => prev + 1);
-      setDropTime(850 + level * 150);
+      setDropTime(1000 / (level + 1));
+      console.log(dropTime);
     }
 
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
@@ -58,7 +59,7 @@ const Tetris = () => {
   const downKeyUp = ({ key }: KeyboardEvent<HTMLDivElement>) => {
     if (!gameOver) {
       if (key === "ArrowDown") {
-        setDropTime(850 + level * 150);
+        setDropTime(1000 / (level + 1));
       }
     }
   };
