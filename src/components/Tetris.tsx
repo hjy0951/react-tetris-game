@@ -12,7 +12,7 @@ import { useStage } from "../hooks/useStage";
 import { usePlayer } from "../hooks/usePlayer";
 import { useInterval } from "../hooks/useInterval";
 import { useGameStatus } from "../hooks/useGameStatus";
-import Block from "./Block";
+import Block from "./NextBlock";
 import { pickRandomTetromino } from "../util/tetrominos";
 
 const Tetris = () => {

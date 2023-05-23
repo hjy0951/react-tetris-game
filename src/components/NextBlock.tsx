@@ -2,7 +2,7 @@ import React from "react";
 // components
 import Cell from "./Cell";
 // style
-import { BlockView } from "./styles/BlockStyle";
+import { NextBlockView } from "./styles/BlockStyle";
 import {
   TetrominoProps,
   TetrominoShape,
@@ -13,7 +13,7 @@ interface BlockProps {
   tetromino: TetrominoProps;
 }
 
-const Block = ({ tetromino }: BlockProps) => {
+const NextBlock = ({ tetromino }: BlockProps) => {
   const makePaddedTetromino = (tetromino: TetrominoShape) => {
     const paddedTetromino = [[0, 0, 0, 0, 0]] as TetrominoShape;
 
@@ -48,10 +48,10 @@ const Block = ({ tetromino }: BlockProps) => {
   };
 
   return (
-    <BlockView height={5} width={5}>
+    <NextBlockView height={5} width={5}>
       {makeBlockCells(tetromino)}
-    </BlockView>
+    </NextBlockView>
   );
 };
 
-export default Block;
+export default NextBlock;
