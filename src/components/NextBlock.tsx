@@ -4,53 +4,29 @@ import Cell from "./Cell";
 // style
 import { NextBlockView } from "./styles/BlockStyle";
 // util
-import {
-  TetrominoProps,
-  TetrominoShape,
-  TetrominoType,
-} from "../util/tetrominos";
+import { TetrominoProps, TetrominoType } from "../util/tetrominos";
+import { createPaddedTetromino } from "../util/gameHelper";
 
-interface BlockProps {
+interface NextBlockProps {
   tetromino: TetrominoProps;
 }
 
-const NextBlock = ({ tetromino }: BlockProps) => {
-  const makePaddedTetromino = (tetromino: TetrominoShape) => {
-    const paddedTetromino = [[0, 0, 0, 0, 0]] as TetrominoShape;
-
-    for (let i = 0; i < tetromino.length; i++) {
-      const line = [...tetromino[i]];
-      line.unshift(0);
-      while (line.length < 5) line.push(0);
-      paddedTetromino.push(line);
-    }
-    while (paddedTetromino.length < 5) paddedTetromino.push([0, 0, 0, 0, 0]);
-    return paddedTetromino;
-  };
-
-  const makeBlockCells = (tetromino: TetrominoProps) => {
-    const blockCells = [];
-    const paddedTetromino = makePaddedTetromino(tetromino.shape);
-    for (let i = 0; i < 5; i++) {
-      const lineCells = [];
-      for (let j = 0; j < 5; j++) {
-        const currentShape = paddedTetromino[i][j];
-        lineCells.push(
-          currentShape !== 0 ? (
-            <Cell key={i * 5 + j} type={currentShape as TetrominoType} />
-          ) : (
-            <Cell key={i * 5 + j} type={0 as TetrominoType} />
-          )
-        );
-      }
-      blockCells.push(lineCells);
-    }
-    return blockCells;
-  };
+const NextBlock = ({ tetromino }: NextBlockProps) => {
+  const paddedTetromino = createPaddedTetromino(tetromino.shape);
+  const height = paddedTetromino.length;
+  const width = paddedTetromino[0].length;
 
   return (
-    <NextBlockView height={5} width={5}>
-      {makeBlockCells(tetromino)}
+    <NextBlockView height={height} width={width}>
+      {paddedTetromino.map((shapes, y) => {
+        return shapes.map((currentShape, x) => {
+          return currentShape !== 0 ? (
+            <Cell key={y * 5 + x} type={currentShape as TetrominoType} />
+          ) : (
+            <Cell key={y * 5 + x} type={0 as TetrominoType} />
+          );
+        });
+      })}
     </NextBlockView>
   );
 };

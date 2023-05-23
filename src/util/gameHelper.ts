@@ -1,5 +1,6 @@
 import { StageFormat } from "../components/Stage";
 import { PlayerState, Position } from "../hooks/usePlayer";
+import { TetrominoShape } from "./tetrominos";
 
 // stage 생성
 export const STAGE_HEIGHT = 20;
@@ -9,6 +10,19 @@ export const createStage = (): StageFormat => {
   return Array.from({ length: STAGE_HEIGHT }, () =>
     new Array(STAGE_WIDTH).fill([0, "clear"])
   );
+};
+
+export const createPaddedTetromino = (tetromino: TetrominoShape) => {
+  const paddedTetromino = [[0, 0, 0, 0, 0]] as TetrominoShape;
+
+  for (let i = 0; i < tetromino.length; i++) {
+    const line = [...tetromino[i]];
+    line.unshift(0);
+    while (line.length < 5) line.push(0);
+    paddedTetromino.push(line);
+  }
+  while (paddedTetromino.length < 5) paddedTetromino.push([0, 0, 0, 0, 0]);
+  return paddedTetromino;
 };
 
 export const checkCollision = (
