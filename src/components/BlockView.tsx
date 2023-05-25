@@ -2,7 +2,7 @@ import React from "react";
 // components
 import Cell from "./Cell";
 // style
-import { Block } from "./styles/BlockStyle";
+import { Block } from "./styles/BlockViewStyle";
 // util
 import { TetrominoProps, TetrominoType } from "../util/tetrominos";
 import { createPaddedTetromino } from "../util/gameHelper";
