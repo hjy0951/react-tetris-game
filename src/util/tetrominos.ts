@@ -85,3 +85,7 @@ export const pickRandomTetromino = (): TetrominoProps => {
   const tetromino = TETROMINOS[randomPick] as TetrominoProps;
   return tetromino;
 };
+
+export const pickTetromino = (type: TetrominoType): TetrominoProps => {
+  return TETROMINOS[type] as TetrominoProps;
+};

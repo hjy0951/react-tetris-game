@@ -8,11 +8,7 @@ import Block from "./NextBlock";
 import { TetrisWrapper, TetrisContainer } from "./styles/TetrisStyle";
 // util
 import { checkCollision, createStage } from "../util/gameHelper";
-import {
-  TETROMINOS,
-  TetrominoProps,
-  pickRandomTetrominoType,
-} from "../util/tetrominos";
+import { pickRandomTetrominoType, pickTetromino } from "../util/tetrominos";
 // hooks
 import { useStage } from "../hooks/useStage";
 import { usePlayer } from "../hooks/usePlayer";
@@ -133,7 +129,7 @@ const Tetris = () => {
             </div>
           )}
           <StartButton onClickFn={startGame} />
-          <Block tetromino={TETROMINOS[nextBlockType] as TetrominoProps} />
+          <Block tetromino={pickTetromino(nextBlockType)} />
         </aside>
       </TetrisContainer>
     </TetrisWrapper>
