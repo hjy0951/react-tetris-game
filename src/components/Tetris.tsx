@@ -3,17 +3,24 @@ import React, { KeyboardEvent, useState } from "react";
 import Stage, { StageFormat } from "./Stage";
 import Display from "./Display";
 import StartButton from "./StartButton";
+import Block from "./NextBlock";
 // style
 import { TetrisWrapper, TetrisContainer } from "./styles/TetrisStyle";
 // util
 import { checkCollision, createStage } from "../util/gameHelper";
+import {
+  TETROMINOS,
+  TetrominoProps,
+  pickRandomTetrominoType,
+} from "../util/tetrominos";
 // hooks
 import { useStage } from "../hooks/useStage";
 import { usePlayer } from "../hooks/usePlayer";
 import { useInterval } from "../hooks/useInterval";
 import { useGameStatus } from "../hooks/useGameStatus";
-import Block from "./NextBlock";
-import { pickRandomTetromino } from "../util/tetrominos";
+// recoil
+import { useRecoilState } from "recoil";
+import { nextBlockState } from "../recoil/atoms";
 
 const Tetris = () => {
   const [gameOver, setGameOver] = useState(false);
@@ -24,6 +31,8 @@ const Tetris = () => {
 
   const [score, setScore, rows, setRows, level, setLevel] =
     useGameStatus(rowsCleared);
+
+  const [nextBlockType, setNextBlockType] = useRecoilState(nextBlockState);
 
   console.log("Rendering!"); // 리렌더링 확인을 위한 로그
 
@@ -36,6 +45,7 @@ const Tetris = () => {
     setScore(0);
     setRows(0);
     setLevel(1);
+    setNextBlockType(pickRandomTetrominoType());
   };
 
   const softDrop = () => {
@@ -122,7 +132,7 @@ const Tetris = () => {
             </div>
           )}
           <StartButton onClickFn={startGame} />
-          <Block tetromino={pickRandomTetromino()} />
+          <Block tetromino={TETROMINOS[nextBlockType] as TetrominoProps} />
         </aside>
       </TetrisContainer>
     </TetrisWrapper>
