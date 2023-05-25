@@ -11,7 +11,7 @@ import { STAGE_WIDTH, checkCollision } from "../util/gameHelper";
 // type (interface, type들에 대한 파일 분리가 필요할듯)
 import { StageFormat } from "../components/Stage";
 // recoil
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { nextBlockState } from "../recoil/atoms";
 
 export interface Position {
@@ -47,8 +47,8 @@ export const usePlayer = (): [
     tetromino: pickTetromino(0).shape,
     collided: false,
   });
-  const nextBlockType = useRecoilValue<TetrominoType>(nextBlockState);
-  const setNextBlockType = useSetRecoilState(nextBlockState);
+  const [nextBlockType, setNextBlockType] =
+    useRecoilState<TetrominoType>(nextBlockState);
 
   const updatePlayerPos = ({ x, y, collided }: PositionUpdateProps) => {
     setPlayer((prev) => ({
