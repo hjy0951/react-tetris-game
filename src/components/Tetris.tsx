@@ -22,8 +22,14 @@ const Tetris = () => {
   const [gameOver, setGameOver] = useState(false);
   const [dropTime, setDropTime] = useState<number | null>(null);
 
-  const [player, updatePlayerPos, initPlayer, resetPlayer, rotatePlayer] =
-    usePlayer();
+  const [
+    player,
+    updatePlayerPos,
+    initPlayer,
+    resetPlayer,
+    changePlayer,
+    rotatePlayer,
+  ] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
 
   const [score, setScore, rows, setRows, level, setLevel] =
@@ -94,6 +100,15 @@ const Tetris = () => {
     }
   };
 
+  const savePlayer = () => {
+    const currentSavedType = savedBlockType;
+    // 저장되어있는 타입이 없는 경우 -> 타입 저장 후, 다음 블록 타입으로 진행
+    // 저장되어있는 타입이 있는 경우 -> 저장되어있는 타입을 불러오고, 현재 타입 저장
+    setSavedBlockType(player.type);
+    if (currentSavedType === 0) resetPlayer();
+    else changePlayer();
+  };
+
   const move = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!gameOver) {
       if (event.key === "ArrowLeft") {
@@ -110,6 +125,7 @@ const Tetris = () => {
         hardDrop();
       } else if (event.key === "c") {
         console.log("press C");
+        savePlayer();
       }
     }
   };

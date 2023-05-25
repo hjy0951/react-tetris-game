@@ -10,8 +10,8 @@ import { STAGE_WIDTH, checkCollision } from "../util/gameHelper";
 // type (interface, type들에 대한 파일 분리가 필요할듯)
 import { StageFormat } from "../components/Stage";
 // recoil
-import { useRecoilState } from "recoil";
-import { nextBlockState } from "../recoil/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { nextBlockState, savedBlockState } from "../recoil/atoms";
 
 export interface Position {
   x: number;
@@ -40,6 +40,7 @@ export const usePlayer = (): [
   updatePlayerPos: (data: PositionUpdateProps) => void,
   initPlayer: () => void,
   resetPlayer: () => void,
+  changePlater: () => void,
   rotatePlayer: (stage: StageFormat, dir: number) => void
 ] => {
   const [player, setPlayer] = useState<PlayerState>({
@@ -51,6 +52,7 @@ export const usePlayer = (): [
   const [changeNext, setChangeNext] = useState<boolean>(false);
   const [nextBlockType, setNextBlockType] =
     useRecoilState<TetrominoType>(nextBlockState);
+  const savedBlockType = useRecoilValue(savedBlockState);
 
   const updatePlayerPos = ({ x, y, collided }: PositionUpdateProps) => {
     setPlayer((prev) => ({
@@ -81,6 +83,16 @@ export const usePlayer = (): [
     setPlayer(newPlayer);
     setChangeNext(true);
   }, [nextBlockType]);
+
+  const changePlayer = useCallback(() => {
+    const savedPlayer = {
+      pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
+      type: savedBlockType,
+      tetromino: pickTetromino(savedBlockType).shape,
+      collided: false,
+    };
+    setPlayer(savedPlayer);
+  }, [savedBlockType]);
 
   // 행렬 회전 (dir === 1 : 시계 방향, dir을 달리하여 반시계 등 다른 기능 추가 가능하도록)
   //  참고: https://www.qu3vipon.com/python-rotate-2d-array
@@ -121,5 +133,12 @@ export const usePlayer = (): [
     setChangeNext(false);
   }, [setNextBlockType, changeNext]);
 
-  return [player, updatePlayerPos, initPlayer, resetPlayer, rotatePlayer];
+  return [
+    player,
+    updatePlayerPos,
+    initPlayer,
+    resetPlayer,
+    changePlayer,
+    rotatePlayer,
+  ];
 };
