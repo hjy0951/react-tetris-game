@@ -38,7 +38,7 @@ interface PositionUpdateProps {
 export const usePlayer = (): [
   player: PlayerState,
   updatePlayerPos: (data: PositionUpdateProps) => void,
-  inintPlayer: () => void,
+  initPlayer: () => void,
   resetPlayer: () => void,
   rotatePlayer: (stage: StageFormat, dir: number) => void
 ] => {
