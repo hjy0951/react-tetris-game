@@ -16,7 +16,7 @@ import { useInterval } from "../hooks/useInterval";
 import { useGameStatus } from "../hooks/useGameStatus";
 // recoil
 import { useRecoilState } from "recoil";
-import { nextBlockState } from "../recoil/atoms";
+import { savedBlockState, nextBlockState } from "../recoil/atoms";
 
 const Tetris = () => {
   const [gameOver, setGameOver] = useState(false);
@@ -30,6 +30,7 @@ const Tetris = () => {
     useGameStatus(rowsCleared);
 
   const [nextBlockType, setNextBlockType] = useRecoilState(nextBlockState);
+  const [savedBlockType, setSavedBlockType] = useRecoilState(savedBlockState);
 
   console.log("Rendering!"); // 리렌더링 확인을 위한 로그
 
@@ -43,6 +44,7 @@ const Tetris = () => {
     setRows(0);
     setLevel(1);
     setNextBlockType(pickRandomTetrominoType());
+    setSavedBlockType(0);
   };
 
   const softDrop = () => {
@@ -106,6 +108,8 @@ const Tetris = () => {
         event.preventDefault();
         console.log("press SpaceBar");
         hardDrop();
+      } else if (event.key === "c") {
+        console.log("press C");
       }
     }
   };
@@ -131,6 +135,9 @@ const Tetris = () => {
           <Block tetromino={pickTetromino(nextBlockType)} />
         </aside>
         <Stage stage={stage as StageFormat} />
+        <aside>
+          <Block tetromino={pickTetromino(savedBlockType)} />
+        </aside>
       </TetrisContainer>
     </TetrisWrapper>
   );
