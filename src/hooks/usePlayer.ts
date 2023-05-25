@@ -1,9 +1,15 @@
 import { useCallback, useState } from "react";
 // util
-import { TetrominoShape, pickRandomTetromino } from "../util/tetrominos";
+import {
+  TetrominoShape,
+  pickRandomTetromino,
+  pickRandomTetrominoType,
+} from "../util/tetrominos";
 import { STAGE_WIDTH, checkCollision } from "../util/gameHelper";
 // type (interface, type들에 대한 파일 분리가 필요할듯)
 import { StageFormat } from "../components/Stage";
+import { useSetRecoilState } from "recoil";
+import { nextBlockState } from "../recoil/atoms";
 
 export interface Position {
   x: number;
@@ -37,6 +43,7 @@ export const usePlayer = (): [
     tetromino: pickRandomTetromino().shape,
     collided: false,
   });
+  const setNextBlockType = useSetRecoilState(nextBlockState);
 
   const updatePlayerPos = ({ x, y, collided }: PositionUpdateProps) => {
     setPlayer((prev) => ({
@@ -44,6 +51,7 @@ export const usePlayer = (): [
       pos: { x: prev.pos.x + x, y: prev.pos.y + y },
       collided,
     }));
+    if (collided === true) setNextBlockType(pickRandomTetrominoType());
   };
 
   const resetPlayer = useCallback(() => {
