@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 // util
 import {
   TetrominoShape,
@@ -47,6 +47,7 @@ export const usePlayer = (): [
     tetromino: pickTetromino(0).shape,
     collided: false,
   });
+  const [changeNext, setChangeNext] = useState<boolean>(false);
   const [nextBlockType, setNextBlockType] =
     useRecoilState<TetrominoType>(nextBlockState);
 
@@ -74,8 +75,8 @@ export const usePlayer = (): [
       collided: false,
     };
     setPlayer(newPlayer);
-    setNextBlockType(pickRandomTetrominoType());
-  }, [nextBlockType, setNextBlockType]);
+    setChangeNext(true);
+  }, [nextBlockType]);
 
   // 행렬 회전 (dir === 1 : 시계 방향, dir을 달리하여 반시계 등 다른 기능 추가 가능하도록)
   //  참고: https://www.qu3vipon.com/python-rotate-2d-array
@@ -109,6 +110,12 @@ export const usePlayer = (): [
     }
     setPlayer(newPlayer);
   };
+
+  useEffect(() => {
+    if (changeNext === false) return;
+    setNextBlockType(pickRandomTetrominoType());
+    setChangeNext(false);
+  }, [setNextBlockType, changeNext]);
 
   return [player, updatePlayerPos, initPlayer, resetPlayer, rotatePlayer];
 };
