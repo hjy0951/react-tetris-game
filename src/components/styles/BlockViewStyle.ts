@@ -5,8 +5,32 @@ interface BlockProps {
   width: number;
 }
 
+interface BlockViewHeaderProps {
+  leftRadius: number;
+  rightRadius: number;
+}
+
+export const BlockViewContainer = styled.div`
+  width: 12vw;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const BlockViewHeader = styled.div<BlockViewHeaderProps>`
+  margin: 0;
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border: 0.2rem solid #333;
+  border-top-left-radius: ${(props) => props.leftRadius}rem;
+  border-top-right-radius: ${(props) => props.rightRadius}rem;
+  font-weight: 800;
+  font-family: Hanna, "Arial Narrow Bold", sans-serif;
+`;
+
 export const Block = styled.div<BlockProps>`
-  width: 100%;
   max-width: 12vw;
   display: grid;
   grid-template-rows: repeat(

@@ -148,11 +148,21 @@ const Tetris = () => {
             </div>
           )}
           <StartButton onClickFn={startGame} />
-          <Block tetromino={pickTetromino(nextBlockType)} />
+          <Block
+            name="next"
+            tetromino={pickTetromino(nextBlockType)}
+            leftRadius={0}
+            rightRadius={0}
+          />
         </aside>
         <Stage stage={stage as StageFormat} />
         <aside>
-          <Block tetromino={pickTetromino(savedBlockType)} />
+          <Block
+            name="saved"
+            tetromino={pickTetromino(savedBlockType)}
+            leftRadius={0}
+            rightRadius={2}
+          />
         </aside>
       </TetrisContainer>
     </TetrisWrapper>
