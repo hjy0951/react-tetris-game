@@ -1,14 +1,17 @@
 import { useCallback, useState } from "react";
 // util
 import {
+  TETROMINOS,
   TetrominoShape,
+  TetrominoType,
   pickRandomTetromino,
   pickRandomTetrominoType,
 } from "../util/tetrominos";
 import { STAGE_WIDTH, checkCollision } from "../util/gameHelper";
 // type (interface, type들에 대한 파일 분리가 필요할듯)
 import { StageFormat } from "../components/Stage";
-import { useSetRecoilState } from "recoil";
+// recoil
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import { nextBlockState } from "../recoil/atoms";
 
 export interface Position {
@@ -35,14 +38,16 @@ interface PositionUpdateProps {
 export const usePlayer = (): [
   player: PlayerState,
   updatePlayerPos: (data: PositionUpdateProps) => void,
+  inintPlayer: () => void,
   resetPlayer: () => void,
   rotatePlayer: (stage: StageFormat, dir: number) => void
 ] => {
   const [player, setPlayer] = useState<PlayerState>({
     pos: { x: 0, y: 0 },
-    tetromino: pickRandomTetromino().shape,
+    tetromino: TETROMINOS[0].shape as TetrominoShape,
     collided: false,
   });
+  const nextBlockType = useRecoilValue<TetrominoType>(nextBlockState);
   const setNextBlockType = useSetRecoilState(nextBlockState);
 
   const updatePlayerPos = ({ x, y, collided }: PositionUpdateProps) => {
@@ -51,10 +56,9 @@ export const usePlayer = (): [
       pos: { x: prev.pos.x + x, y: prev.pos.y + y },
       collided,
     }));
-    if (collided === true) setNextBlockType(pickRandomTetrominoType());
   };
 
-  const resetPlayer = useCallback(() => {
+  const initPlayer = useCallback(() => {
     const initialPlayer = {
       pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
       tetromino: pickRandomTetromino().shape,
@@ -62,6 +66,16 @@ export const usePlayer = (): [
     };
     setPlayer(initialPlayer);
   }, []);
+
+  const resetPlayer = useCallback(() => {
+    const newPlayer = {
+      pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
+      tetromino: TETROMINOS[nextBlockType].shape,
+      collided: false,
+    } as PlayerState;
+    setPlayer(newPlayer);
+    setNextBlockType(pickRandomTetrominoType());
+  }, [nextBlockType, setNextBlockType]);
 
   // 행렬 회전 (dir === 1 : 시계 방향, dir을 달리하여 반시계 등 다른 기능 추가 가능하도록)
   //  참고: https://www.qu3vipon.com/python-rotate-2d-array
@@ -96,5 +110,5 @@ export const usePlayer = (): [
     setPlayer(newPlayer);
   };
 
-  return [player, updatePlayerPos, resetPlayer, rotatePlayer];
+  return [player, updatePlayerPos, initPlayer, resetPlayer, rotatePlayer];
 };

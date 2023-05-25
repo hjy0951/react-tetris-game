@@ -26,7 +26,8 @@ const Tetris = () => {
   const [gameOver, setGameOver] = useState(false);
   const [dropTime, setDropTime] = useState<number | null>(null);
 
-  const [player, updatePlayerPos, resetPlayer, rotatePlayer] = usePlayer();
+  const [player, updatePlayerPos, initPlayer, resetPlayer, rotatePlayer] =
+    usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
 
   const [score, setScore, rows, setRows, level, setLevel] =
@@ -40,7 +41,7 @@ const Tetris = () => {
     // Reset Everything
     setStage(createStage() as StageFormat);
     setDropTime(500);
-    resetPlayer();
+    initPlayer();
     setGameOver(false);
     setScore(0);
     setRows(0);
