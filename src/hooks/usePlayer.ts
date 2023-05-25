@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import {
   TetrominoShape,
   TetrominoType,
-  pickRandomTetromino,
   pickRandomTetrominoType,
   pickTetromino,
 } from "../util/tetrominos";
@@ -21,6 +20,7 @@ export interface Position {
 
 export interface PlayerState {
   pos: Position;
+  type: TetrominoType;
   tetromino: TetrominoShape;
   collided: boolean;
 }
@@ -44,6 +44,7 @@ export const usePlayer = (): [
 ] => {
   const [player, setPlayer] = useState<PlayerState>({
     pos: { x: 0, y: 0 },
+    type: 0,
     tetromino: pickTetromino(0).shape,
     collided: false,
   });
@@ -60,9 +61,11 @@ export const usePlayer = (): [
   };
 
   const initPlayer = useCallback(() => {
+    const initailType = pickRandomTetrominoType();
     const initialPlayer = {
       pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
-      tetromino: pickRandomTetromino().shape,
+      type: initailType,
+      tetromino: pickTetromino(initailType).shape,
       collided: false,
     };
     setPlayer(initialPlayer);
@@ -71,6 +74,7 @@ export const usePlayer = (): [
   const resetPlayer = useCallback(() => {
     const newPlayer = {
       pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
+      type: nextBlockType,
       tetromino: pickTetromino(nextBlockType).shape,
       collided: false,
     };
