@@ -74,10 +74,14 @@ export const TETROMINOS = {
   },
 };
 
-export const pickRandomTetromino = (): TetrominoProps => {
+export const pickRandomTetrominoType = (): TetrominoType => {
   const testrominoTypes = "IJLOSTZ";
   const randomNumber = Math.floor(Math.random() * testrominoTypes.length);
-  const randomPick = testrominoTypes[randomNumber] as TetrominoType;
+  return testrominoTypes[randomNumber] as TetrominoType;
+};
+
+export const pickRandomTetromino = (): TetrominoProps => {
+  const randomPick = pickRandomTetrominoType();
   const tetromino = TETROMINOS[randomPick] as TetrominoProps;
   return tetromino;
 };
