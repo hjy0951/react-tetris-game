@@ -117,7 +117,6 @@ const Tetris = () => {
   return (
     <TetrisWrapper role="button" onKeyDown={(e) => move(e)} onKeyUp={downKeyUp}>
       <TetrisContainer>
-        <Stage stage={stage as StageFormat} />
         <aside>
           {gameOver ? (
             <Display gameOver={gameOver} text="Game Over" />
@@ -131,6 +130,7 @@ const Tetris = () => {
           <StartButton onClickFn={startGame} />
           <Block tetromino={pickTetromino(nextBlockType)} />
         </aside>
+        <Stage stage={stage as StageFormat} />
       </TetrisContainer>
     </TetrisWrapper>
   );
