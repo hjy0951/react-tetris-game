@@ -2,22 +2,22 @@ import React from "react";
 // components
 import Cell from "./Cell";
 // style
-import { NextBlockView } from "./styles/BlockStyle";
+import { Block } from "./styles/BlockStyle";
 // util
 import { TetrominoProps, TetrominoType } from "../util/tetrominos";
 import { createPaddedTetromino } from "../util/gameHelper";
 
-interface NextBlockProps {
+interface BlockViewProps {
   tetromino: TetrominoProps;
 }
 
-const NextBlock = ({ tetromino }: NextBlockProps) => {
+const BlockView = ({ tetromino }: BlockViewProps) => {
   const paddedTetromino = createPaddedTetromino(tetromino.shape);
   const height = paddedTetromino.length;
   const width = paddedTetromino[0].length;
 
   return (
-    <NextBlockView height={height} width={width}>
+    <Block height={height} width={width}>
       {paddedTetromino.map((shapes, y) => {
         return shapes.map((currentShape, x) => {
           return currentShape !== 0 ? (
@@ -27,8 +27,8 @@ const NextBlock = ({ tetromino }: NextBlockProps) => {
           );
         });
       })}
-    </NextBlockView>
+    </Block>
   );
 };
 
-export default NextBlock;
+export default BlockView;

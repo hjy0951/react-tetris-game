@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-interface NextBlockViewProps {
+interface BlockProps {
   height: number;
   width: number;
 }
 
-export const NextBlockView = styled.div<NextBlockViewProps>`
+export const Block = styled.div<BlockProps>`
   width: 100%;
   max-width: 12vw;
   display: grid;

@@ -3,7 +3,7 @@ import React, { KeyboardEvent, useState } from "react";
 import Stage, { StageFormat } from "./Stage";
 import Display from "./Display";
 import StartButton from "./StartButton";
-import Block from "./NextBlock";
+import Block from "./BlockView";
 // style
 import { TetrisWrapper, TetrisContainer } from "./styles/TetrisStyle";
 // util
