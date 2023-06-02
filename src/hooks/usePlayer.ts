@@ -160,11 +160,6 @@ export const usePlayer = (): [
     setChangeNext(false);
   }, [setNextBlockType, changeNext]);
 
-  useEffect(() => {
-    if (isSwapped === false) return;
-    console.log("Player is swapped!");
-  }, [isSwapped]);
-
   return [
     player,
     updatePlayerPos,
