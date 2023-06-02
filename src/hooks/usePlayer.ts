@@ -84,9 +84,11 @@ export const usePlayer = (): [
     };
     setPlayer(newPlayer);
     setChangeNext(true);
+    setSwapped(false);
   }, [nextBlockType]);
 
   const swapPlayer = useCallback(() => {
+    if (isSwapped === true) return;
     let newPlayer;
     const currentSavedType = savedBlockType;
 
@@ -111,7 +113,13 @@ export const usePlayer = (): [
     setSavedBlockType(player.type);
     setPlayer(newPlayer);
     setSwapped(true);
-  }, [savedBlockType, nextBlockType, player.type, setSavedBlockType]);
+  }, [
+    isSwapped,
+    savedBlockType,
+    nextBlockType,
+    player.type,
+    setSavedBlockType,
+  ]);
 
   // 행렬 회전 (dir === 1 : 시계 방향, dir을 달리하여 반시계 등 다른 기능 추가 가능하도록)
   //  참고: https://www.qu3vipon.com/python-rotate-2d-array
@@ -155,7 +163,6 @@ export const usePlayer = (): [
   useEffect(() => {
     if (isSwapped === false) return;
     console.log("Player is swapped!");
-    setSwapped(false);
   }, [isSwapped]);
 
   return [
