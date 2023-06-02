@@ -10,7 +10,7 @@ import { STAGE_WIDTH, checkCollision } from "../util/gameHelper";
 // type (interface, type들에 대한 파일 분리가 필요할듯)
 import { StageFormat } from "../components/Stage";
 // recoil
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { nextBlockState, savedBlockState } from "../recoil/atoms";
 
 export interface Position {
@@ -40,7 +40,7 @@ export const usePlayer = (): [
   updatePlayerPos: (data: PositionUpdateProps) => void,
   initPlayer: () => void,
   resetPlayer: () => void,
-  changePlater: () => void,
+  swapPlater: () => void,
   rotatePlayer: (stage: StageFormat, dir: number) => void
 ] => {
   const [player, setPlayer] = useState<PlayerState>({
@@ -50,9 +50,11 @@ export const usePlayer = (): [
     collided: false,
   });
   const [changeNext, setChangeNext] = useState<boolean>(false);
+  const [isSwapped, setSwapped] = useState<boolean>(false);
+
   const [nextBlockType, setNextBlockType] =
     useRecoilState<TetrominoType>(nextBlockState);
-  const savedBlockType = useRecoilValue(savedBlockState);
+  const [savedBlockType, setSavedBlockType] = useRecoilState(savedBlockState);
 
   const updatePlayerPos = ({ x, y, collided }: PositionUpdateProps) => {
     setPlayer((prev) => ({
@@ -84,15 +86,32 @@ export const usePlayer = (): [
     setChangeNext(true);
   }, [nextBlockType]);
 
-  const changePlayer = useCallback(() => {
-    const savedPlayer = {
-      pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
-      type: savedBlockType,
-      tetromino: pickTetromino(savedBlockType).shape,
-      collided: false,
-    };
-    setPlayer(savedPlayer);
-  }, [savedBlockType]);
+  const swapPlayer = useCallback(() => {
+    let newPlayer;
+    const currentSavedType = savedBlockType;
+
+    // 저장되어있는 타입이 없는 경우 -> 타입 저장 후, 다음 블록 타입으로 진행
+    // 저장되어있는 타입이 있는 경우 -> 저장되어있는 타입을 불러오고, 현재 타입 저장
+    if (currentSavedType === 0) {
+      newPlayer = {
+        pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
+        type: nextBlockType,
+        tetromino: pickTetromino(nextBlockType).shape,
+        collided: false,
+      };
+      setChangeNext(true);
+    } else {
+      newPlayer = {
+        pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
+        type: savedBlockType,
+        tetromino: pickTetromino(savedBlockType).shape,
+        collided: false,
+      };
+    }
+    setSavedBlockType(player.type);
+    setPlayer(newPlayer);
+    setSwapped(true);
+  }, [savedBlockType, nextBlockType, player.type, setSavedBlockType]);
 
   // 행렬 회전 (dir === 1 : 시계 방향, dir을 달리하여 반시계 등 다른 기능 추가 가능하도록)
   //  참고: https://www.qu3vipon.com/python-rotate-2d-array
@@ -133,12 +152,18 @@ export const usePlayer = (): [
     setChangeNext(false);
   }, [setNextBlockType, changeNext]);
 
+  useEffect(() => {
+    if (isSwapped === false) return;
+    console.log("Player is swapped!");
+    setSwapped(false);
+  }, [isSwapped]);
+
   return [
     player,
     updatePlayerPos,
     initPlayer,
     resetPlayer,
-    changePlayer,
+    swapPlayer,
     rotatePlayer,
   ];
 };
